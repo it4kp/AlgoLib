@@ -41,6 +41,8 @@
     <Compile Include="DataStructures\AhoCorasickTree.cs" />
     <Compile Include="DataStructures\MaxSegmentTreeLight.cs" />
     <Compile Include="DataStructures\MinSegmentTreeLight.cs" />
+    <Compile Include="Geometry\GeometryUtils.cs" />
+    <Compile Include="Geometry\PointInt2D.cs" />
     <Compile Include="Misc\MyBigInteger.cs" />
     <Compile Include="BitUtils.cs" />
     <Compile Include="DataStructures\CartesianTree.cs" />
@@ -48,7 +50,6 @@
     <Compile Include="DataStructures\FenwickTree.cs" />
     <Compile Include="DataStructures\Pair.cs" />
     <Compile Include="DataStructures\PriorityQueue.cs" />
-    <Compile Include="Geometry.cs" />
     <Compile Include="Graphs\MaxFlowGraph.cs" />
     <Compile Include="Graphs\MaximumMatchingGeneralGraph.cs" />
     <Compile Include="Graphs\SAT2Graph.cs" />
