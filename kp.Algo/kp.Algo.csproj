@@ -55,6 +55,7 @@
     <Compile Include="Graphs\SAT2Graph.cs" />
     <Compile Include="MatchingUtils.cs" />
     <Compile Include="MatrixUtils.cs" />
+    <Compile Include="Misc\MyComparer.cs" />
     <Compile Include="PermutationUtils.cs" />
     <Compile Include="Misc\Matrix.cs" />
     <Compile Include="NumTheoryUtils.cs" />

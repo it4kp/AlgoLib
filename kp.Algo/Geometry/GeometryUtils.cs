@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 
 namespace kp.Algo.Geometry
 {
@@ -44,7 +43,25 @@ namespace kp.Algo.Geometry
 		/// </summary>
 		public static IList<PointInt2D> ConvexHull( IList<PointInt2D> points )
 		{
-			throw new NotImplementedException();
+			if ( points.Count < 3 )
+				return points;
+			var center = points[0];
+			for ( int i = 1; i < points.Count; ++i )
+				if ( points[i].Y < center.Y || ( points[i].Y == center.Y && points[i].X < center.X ) )
+					center = points[i];
+			points = SortByAngle( points, center );
+			points.Add( points[0] );
+			var ans = new List<PointInt2D> { points[0], points[1] };
+			for ( int i = 2; i < points.Count; ++i )
+			{
+				while ( ans.Count > 1 && ( ans[ans.Count - 1] - ans[ans.Count - 2] ) * ( points[i] - ans[ans.Count - 2] ) <= 0 )
+				{
+					ans.RemoveAt( ans.Count - 1 );
+				}
+				if ( i < points.Count - 1 )
+					ans.Add( points[i] );
+			}
+			return ans;
 		}
 
 		/// <summary>
@@ -53,11 +70,11 @@ namespace kp.Algo.Geometry
 		/// </summary>
 		public static IList<PointInt2D> SortByAngle( IList<PointInt2D> points, PointInt2D center )
 		{
-			return points.OrderBy( p => p, Comparer<PointInt2D>.Create( ( a, b ) =>
+			return points.OrderBy( p => p, new kp.Algo.Misc.MyComparer<PointInt2D>( ( a, b ) =>
 			{
-				if ( a.Y >= center.Y && b.Y < center.Y || a.Y > center.Y && b.Y <= center.Y )
+				if ( a.Y >= center.Y && b.Y < center.Y )
 					return -1;
-				if ( b.Y >= center.Y && a.Y < center.Y || b.Y > center.Y && a.Y <= center.Y )
+				if ( b.Y >= center.Y && a.Y < center.Y )
 					return 1;
 				if ( a.Y == center.Y && b.Y == center.Y )
 					if ( a.X >= center.X )

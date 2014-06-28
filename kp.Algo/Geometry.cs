@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace kp.Algo
+namespace kp.Algo.Temp
 {
 	public class Point
 	{
