@@ -64,6 +64,7 @@
     <Compile Include="MatrixUtilsTests.cs" />
     <Compile Include="MatchingTests.cs" />
     <Compile Include="NumTheoryTests.cs" />
+    <Compile Include="SequenceTests.cs" />
     <Compile Include="StringsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
