@@ -1,8 +1,12 @@
 ﻿using System;
-using System.Text;
 
 namespace kp.Algo.Misc
 {
+	/// <summary>
+	/// Custom mplementation of arbitrary length arithmetics.
+	/// 
+	/// WARNING: Length of numbers is bounded by <see cref="MyBigInteger.MaxDigits"/>
+	/// </summary>
 	public class MyBigInteger : ICloneable, IComparable<MyBigInteger>
 	{
 		public static int MaxDigits = 120;
@@ -188,6 +192,41 @@ namespace kp.Algo.Misc
 			return res;
 		}
 
+		public static implicit operator MyBigInteger( string num )
+		{
+			if ( string.IsNullOrEmpty( num ) )
+				throw new InvalidCastException();
+			for ( int i = 0; i < num.Length; ++i )
+			{
+				if ( num[i] < '0' || num[i] > '9' )
+				{
+					if ( num[i] != '-' || i > 0 )
+						throw new InvalidCastException();
+				}
+			}
+			MyBigInteger res = new MyBigInteger();
+			int pos = 0;
+			if ( num[0] == '-' )
+			{
+				res._sign = -1;
+				pos = 1;
+			}
+
+			for ( int i = num.Length - 1; i >= pos; i -= BaseDigits )
+			{
+				int d = 1;
+				for ( int j = 0; j < BaseDigits && i - j >= pos; ++j )
+				{
+					res._data[res._sz - 1] += d * ( num[i - j] - '0' );
+					d *= 10;
+				}
+				res._sz++;
+			}
+
+			res.Norm();
+			return res;
+		}
+
 		public int CompareTo( MyBigInteger o )
 		{
 			if ( _sign == -1 )
@@ -220,7 +259,7 @@ namespace kp.Algo.Misc
 
 		public override string ToString()
 		{
-			StringBuilder sb = new StringBuilder();
+			System.Text.StringBuilder sb = new System.Text.StringBuilder();
 			if ( _sign == -1 ) sb.Append( "-" );
 			sb.Append( _data[_sz - 1] );
 			for ( int i = _sz - 2; i >= 0; --i )

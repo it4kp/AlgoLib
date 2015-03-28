@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Numerics;
+using kp.Algo.Misc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace kp.Algo.Test
@@ -76,6 +77,17 @@ namespace kp.Algo.Test
 						Assert.AreEqual( ( ( ( bi * bj ) % bmod + bmod ) % bmod ).ToString(),
 							NumTheoryUtils.Mul( i - mx, mx - j, mod ).ToString(), string.Format( "{0}*{1} modulo {2}", bi, bj, bmod ) );
 					}
+			Assert.AreEqual( (MyBigInteger)1, (MyBigInteger)"1" );
+			Assert.AreEqual( (MyBigInteger)12, (MyBigInteger)"12" );
+			Assert.AreEqual( (MyBigInteger)123, (MyBigInteger)"123" );
+			Assert.AreEqual( (MyBigInteger)1234, (MyBigInteger)"1234" );
+			Assert.AreEqual( (MyBigInteger)12345, (MyBigInteger)"12345" );
+
+			Assert.AreEqual( (MyBigInteger)( -1 ), (MyBigInteger)"-1" );
+			Assert.AreEqual( (MyBigInteger)( -12 ), (MyBigInteger)"-12" );
+			Assert.AreEqual( (MyBigInteger)( -123 ), (MyBigInteger)"-123" );
+			Assert.AreEqual( (MyBigInteger)( -1234 ), (MyBigInteger)"-1234" );
+			Assert.AreEqual( (MyBigInteger)( -12345 ), (MyBigInteger)"-12345" );
 		}
 
 		[TestMethod]

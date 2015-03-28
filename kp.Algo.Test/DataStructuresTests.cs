@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using kp.Algo.DataStructures;
 
@@ -107,6 +108,75 @@ namespace kp.Algo.Test
 						Assert.AreEqual( brute, my );
 					}
 				}
+			}
+		}
+
+		[TestMethod]
+		public void DisjointSetUnionMustWork()
+		{
+			var rnd = new Random( 123 );
+			for ( int times = 0; times < 100; times++ )
+			{
+				int n = rnd.Next( 50 ) + 1;
+				var dsu = new DisjointSetUnion( n );
+				var naiveDsu = new DisjointSetUnionNaive( n );
+				for ( int ops = 0; ops < 100; ops++ )
+				{
+					int a = rnd.Next( n ), b = rnd.Next( n );
+					if ( rnd.Next( 2 ) == 0 )
+					{
+						Assert.AreEqual( naiveDsu.InOneSet( a, b ), dsu.InOneSet( a, b ) );
+					}
+					else
+					{
+						Assert.AreEqual( naiveDsu.Join( a, b ), dsu.Join( a, b ) );
+					}
+				}
+
+				for ( int i = 0; i < n; i++ )
+				{
+					for ( int j = 0; j < n; j++ )
+					{
+						Assert.AreEqual( naiveDsu.InOneSet( i, j ), dsu.InOneSet( i, j ) );
+					}
+				}
+			}
+		}
+
+		class DisjointSetUnionNaive
+		{
+			private readonly int _n;
+			private int[] p;
+
+			public DisjointSetUnionNaive( int n )
+			{
+				_n = n;
+				p = new int[n];
+				for ( int i = 0; i < n; i++ )
+				{
+					p[i] = i;
+				}
+			}
+
+			public bool InOneSet( int a, int b )
+			{
+				return p[a] == p[b];
+			}
+
+			public bool Join( int a, int b )
+			{
+				if ( InOneSet( a, b ) )
+					return false;
+
+				int oldSet = p[a];
+				int newSet = p[b];
+				for ( int i = 0; i < _n; i++ )
+				{
+					if ( p[i] == oldSet )
+						p[i] = newSet;
+				}
+
+				return true;
 			}
 		}
 	}

@@ -39,10 +39,12 @@
   <ItemGroup>
     <Compile Include="ArrayUtils.cs" />
     <Compile Include="DataStructures\AhoCorasickTree.cs" />
+    <Compile Include="DataStructures\DisjointSetUnion.cs" />
     <Compile Include="DataStructures\MaxSegmentTreeLight.cs" />
     <Compile Include="DataStructures\MinSegmentTreeLight.cs" />
     <Compile Include="Geometry\GeometryUtils.cs" />
     <Compile Include="Geometry\PointInt2D.cs" />
+    <Compile Include="IO\Scanner.cs" />
     <Compile Include="Misc\MyBigInteger.cs" />
     <Compile Include="BitUtils.cs" />
     <Compile Include="DataStructures\CartesianTree.cs" />
