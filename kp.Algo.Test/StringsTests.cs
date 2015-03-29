@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace kp.Algo.Test
@@ -125,6 +126,34 @@ namespace kp.Algo.Test
 			}
 		}
 
+		[TestMethod]
+		public void PrefixTests()
+		{
+			var rnd = new Random( 123 );
+			for ( int times = 0; times < 10000; times++ )
+			{
+				int l = rnd.Next( 20 ) + 1;
+				var ch = new char[l];
+				for ( int i = 0; i < l; i++ )
+				{
+					ch[i] = (char)( rnd.Next( 3 ) + 'a' );
+				}
+
+				var s = new string( ch );
+				var my = StringUtils.GetPrefixFunction( s );
+				var correct = GetPrefixFunctionNaive( s );
+				Assert.IsTrue( correct.SequenceEqual( my ) );
+
+				var myPeriod = StringUtils.GetStringCyclicPeriod( s );
+				var correctPeriod = GetCyclicPeriodNaive( s );
+				Assert.AreEqual( correctPeriod, myPeriod );
+
+				myPeriod = StringUtils.GetStringLinearPeriod( s );
+				correctPeriod = GetLinearPeriodNaive( s );
+				Assert.AreEqual( correctPeriod, myPeriod );
+			}
+		}
+
 		#region Helper methods
 
 		private void AssertArraysAreEqual( int[] a, int[] b, string text, int len )
@@ -149,6 +178,53 @@ namespace kp.Algo.Test
 			Assert.AreEqual( len, b.Length );
 			for ( int i = 0; i < len; ++i )
 				Assert.AreEqual( a[i], b[i], "Position " + i + " differs" );
+		}
+
+		private int[] GetPrefixFunctionNaive( string s )
+		{
+			var p = new int[s.Length];
+			for ( int i = 1; i < s.Length; i++ )
+			{
+				for ( int j = 1; j <= i; ++j )
+					if ( s.StartsWith( s.Substring( j, i - j + 1 ) ) )
+					{
+						p[i] = i - j + 1;
+						break;
+					}
+			}
+			return p;
+		}
+
+		private int GetCyclicPeriodNaive( string s )
+		{
+			string t = s;
+			for ( int i = 0; i < s.Length; ++i )
+			{
+				t = t.Substring( 1 ) + t[0];
+				if ( t == s )
+					return i + 1;
+			}
+			throw new Exception();
+		}
+
+		private int GetLinearPeriodNaive( string s )
+		{
+			for ( int i = 1; i < s.Length; ++i )
+			{
+				bool ok = true;
+
+				for ( int j = 0; j < s.Length; j++ )
+				{
+					if ( s[j] != s[j % i] )
+					{
+						ok = false;
+						break;
+					}
+				}
+
+				if ( ok ) return i;
+			}
+			return s.Length;
 		}
 
 		#endregion

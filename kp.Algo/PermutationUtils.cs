@@ -173,5 +173,17 @@ namespace kp.Algo
 
 			return result;
 		}
+
+		/// <summary>
+		/// Gets inverse permutation of a given one
+		/// </summary>
+		public static int[] GetInversePermutation( int[] p )
+		{
+			int n = p.Length;
+			var res = new int[n];
+			for ( int i = 0; i < n; ++i )
+				res[p[i]] = i;
+			return res;
+		}
 	}
 }

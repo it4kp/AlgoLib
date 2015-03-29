@@ -50,6 +50,8 @@ namespace kp.Algo
 		/// <summary>
 		/// Gets suffix array of cyclic shifts.
 		/// Time complexity: O(NlogN) where N is the text's length
+		/// 
+		/// Equal cyclic suffixes are order by their position
 		/// </summary>
 		public static int[] GetSuffixArrayCyclic( string text, int upperChar )
 		{
@@ -70,11 +72,12 @@ namespace kp.Algo
 			}
 
 			int[] tmpP = new int[n], tmpC = new int[n];
-			for ( int h = 0; ( 1 << h ) < n; ++h )
+			int powH = 1;
+			for ( int h = 0; powH < n; ++h, powH *= 2 )
 			{
 				for ( int i = 0; i < n; ++i )
 				{
-					tmpP[i] = res[i] - ( 1 << h );
+					tmpP[i] = res[i] - powH;
 					if ( tmpP[i] < 0 ) tmpP[i] += n;
 				}
 				for ( int i = 0; i < numClasses; ++i ) cnt[i] = 0;
@@ -88,13 +91,29 @@ namespace kp.Algo
 				numClasses = 1;
 				for ( int i = 1; i < n; ++i )
 				{
-					int pos1 = ( res[i] + ( 1 << h ) ) % n, pos2 = ( res[i - 1] + ( 1 << h ) ) % n;
+					int pos1 = res[i] + powH;
+					if ( pos1 >= n ) pos1 -= n;
+					int pos2 = res[i - 1] + powH;
+					if ( pos2 >= n ) pos2 -= n;
 					if ( c[res[i]] != c[res[i - 1]] || c[pos1] != c[pos2] )
 						++numClasses;
 					tmpC[res[i]] = numClasses - 1;
 				}
-				for ( int i = 0; i < n; ++i ) c[i] = tmpC[i];
+				Array.Copy( tmpC, c, n );
 			}
+
+			// Let's order equal cyclic suffixes
+			var period = GetStringCyclicPeriod( text );
+			var groupSize = text.Length / period;
+
+			if ( groupSize > 1 )
+			{
+				for ( int i = 0; i < res.Length; i += groupSize )
+				{
+					Array.Sort( res, i, groupSize );
+				}
+			}
+
 			return res;
 		}
 
@@ -188,6 +207,66 @@ namespace kp.Algo
 			}
 
 			return res;
+		}
+
+		/// <summary>
+		/// Gets the cyclic period of the string
+		/// The cyclic period is the least number of cyclic shifts
+		/// neede to get the same string.
+		/// Time complexity: O(n)
+		/// 
+		/// EXAMPLE:
+		/// for string S = aaaaa the period is 1
+		/// for string S = ababab the period is 2
+		/// for string S = abba the period is 4
+		/// </summary>
+		public static int GetStringCyclicPeriod( string s )
+		{
+			var p = GetPrefixFunction( s );
+			var period = s.Length - p[s.Length - 1];
+			if ( 2 * period <= s.Length && s.Length % period == 0 )
+				return period;
+			return s.Length;
+		}
+
+		/// <summary>
+		/// Gets the linear period of the string
+		/// The linear period of string S is the length of smallest string P
+		/// such that S is concatenation of P's with last piece possibly trimmed.
+		/// Time complexity: O(n)
+		/// 
+		/// EXAMPLE:
+		/// for string S = aaaaa the period is 1, P = a
+		/// for string S = ababa the period is 2, P = ab
+		/// for string S = abba the period is 3, P = abb
+		/// </summary>
+		public static int GetStringLinearPeriod( string s )
+		{
+			var p = GetPrefixFunction( s );
+			var period = s.Length - p[s.Length - 1];
+			return period;
+		}
+
+		/// <summary>
+		/// Gets prefix function of a string
+		/// 
+		/// The firts element is zero, th i-th element
+		/// is the maximal length L of a suffix s[i-L..i-1]
+		/// that is equal to a prefix s[0..L-1]
+		/// 
+		/// Time complexity: O(n)
+		/// </summary>
+		public static int[] GetPrefixFunction( string s )
+		{
+			var p = new int[s.Length];
+			int k = 0;
+			for ( int i = 1; i < s.Length; ++i )
+			{
+				while ( k > 0 && s[k] != s[i] ) k = p[k - 1];
+				if ( s[k] == s[i] ) ++k;
+				p[i] = k;
+			}
+			return p;
 		}
 
 		/// <summary>
