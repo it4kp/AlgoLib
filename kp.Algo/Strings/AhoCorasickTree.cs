@@ -1,4 +1,4 @@
-﻿namespace kp.Algo.DataStructures
+﻿namespace kp.Algo.Strings
 {
 	/// <summary>
 	/// Aho-Corasick tree

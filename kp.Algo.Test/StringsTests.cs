@@ -154,7 +154,57 @@ namespace kp.Algo.Test
 			}
 		}
 
+		[TestMethod]
+		public void PalindromesMustWork()
+		{
+			var rnd = new Random( 123 );
+			for ( int tests = 0; tests < 10000; tests++ )
+			{
+				var len = rnd.Next( 100 ) + 1;
+				var c = new char[len];
+				for ( int i = 0; i < len; i++ )
+				{
+					c[i] = (char)( 'a' + rnd.Next( 3 ) );
+				}
+				var s = new string( c );
+
+				int[] oddCorrect, evenCorrect, oddMy, evenMy;
+				GetAllPalindromesNaive( s, out oddCorrect, out evenCorrect );
+				StringUtils.GetAllPalindromes( s, out oddMy, out evenMy );
+
+				Assert.IsTrue( oddMy.SequenceEqual( oddCorrect ) );
+				Assert.IsTrue( evenMy.SequenceEqual( evenCorrect ) );
+			}
+		}
+
 		#region Helper methods
+
+		private static void GetAllPalindromesNaive( string s, out int[] oddLength, out int[] evenLength )
+		{
+			int n = s.Length;
+			oddLength = new int[n];
+			for ( int i = 0; i < n; i++ )
+			{
+				int l = i - 1, r = i + 1;
+				while ( l >= 0 && r < n && s[l] == s[r] )
+				{
+					--l;
+					++r;
+				}
+				oddLength[i] = r - l - 1;
+			}
+			evenLength = new int[n];
+			for ( int i = 0; i < n; i++ )
+			{
+				int l = i - 1, r = i;
+				while ( l >= 0 && r < n && s[l] == s[r] )
+				{
+					--l;
+					++r;
+				}
+				evenLength[i] = r - l - 1;
+			}
+		}
 
 		private void AssertArraysAreEqual( int[] a, int[] b, string text, int len )
 		{

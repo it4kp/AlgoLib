@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using kp.Algo.Strings;
 
 namespace kp.Algo
 {
@@ -157,9 +158,9 @@ namespace kp.Algo
 		/// Returns Aho-Corasic tree for a set of patterns and alphabet parameters
 		/// </summary>
 		/// <returns></returns>
-		public static DataStructures.AhoCorasickTree GetAhoCorasickTree( char[][] patterns, char minChar, char maxChar )
+		public static AhoCorasickTree GetAhoCorasickTree( char[][] patterns, char minChar, char maxChar )
 		{
-			var tree = new DataStructures.AhoCorasickTree( patterns.Sum( p => p.Length ) + 1, maxChar - minChar + 1, minChar );
+			var tree = new AhoCorasickTree( patterns.Sum( p => p.Length ) + 1, maxChar - minChar + 1, minChar );
 			foreach ( var pattern in patterns )
 			{
 				tree.AddString( pattern );
@@ -171,7 +172,7 @@ namespace kp.Algo
 		/// Counts the number of matchings of patterns in a given text
 		/// tree must be built with a set of distinct patterns!
 		/// </summary>
-		public static long CountMatches( char[] text, DataStructures.AhoCorasickTree tree )
+		public static long CountMatches( char[] text, AhoCorasickTree tree )
 		{
 			if ( text == null || text.Length == 0 )
 				return 0;
@@ -267,6 +268,51 @@ namespace kp.Algo
 				p[i] = k;
 			}
 			return p;
+		}
+
+		/// <summary>
+		/// Uses Manacher's algorithm to get all palindromes inside the string
+		/// Returns two arrays with maximal palinrdome lengths with centers at certain places
+		/// 
+		/// Time complexity: O(n)
+		/// </summary>
+		public static void GetAllPalindromes( string s, out int[] oddLength, out int[] evenLength )
+		{
+			int n = s.Length;
+			oddLength = new int[n];
+			int l = 0, r = -1;
+			for ( int i = 0; i < n; i++ )
+			{
+				int k = ( r >= i ? Math.Min( oddLength[r - i + l], r - i ) : 0 );
+				while ( i - k - 1 >= 0 && i + k + 1 < n && s[i - k - 1] == s[i + k + 1] ) ++k;
+				oddLength[i] = k;
+				if ( i + k > r )
+				{
+					l = i - k;
+					r = i + k;
+				}
+			}
+			for ( int i = 0; i < n; i++ )
+			{
+				oddLength[i] = 2 * oddLength[i] + 1; // actual palindrome length
+			}
+			evenLength = new int[n];
+			l = 0; r = -1;
+			for ( int i = 0; i < n; i++ )
+			{
+				int k = ( r >= i ? Math.Max( Math.Min( evenLength[r - i + l + 1] - 1, r - i + 1 ), 0 ) : 0 );
+				while ( i - k - 1 >= 0 && i + k < n && s[i - k - 1] == s[i + k] ) ++k;
+				evenLength[i] = k;
+				if ( i + k - 1 > r )
+				{
+					l = i - k;
+					r = i + k - 1;
+				}
+			}
+			for ( int i = 0; i < n; i++ )
+			{
+				evenLength[i] = 2 * evenLength[i]; // actual palindrome length
+			}
 		}
 
 		/// <summary>
