@@ -227,6 +227,27 @@ namespace kp.Algo.Misc
 			return res;
 		}
 
+		public int Digits
+		{
+			get
+			{
+				if ( _sz == 0 )
+					return 0;
+				if ( _sz == 1 && _data[0] == 0 )
+					return 1;
+				int res = 0;
+				int x = _data[_sz - 1];
+				while ( x > 0 )
+				{
+					++res;
+					x /= 10;
+				}
+				if ( _sz > 1 )
+					res += BaseDigits * ( _sz - 1 );
+				return res;
+			}
+		}
+
 		public int CompareTo( MyBigInteger o )
 		{
 			if ( _sign == -1 )
