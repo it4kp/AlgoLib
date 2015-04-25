@@ -60,6 +60,7 @@
     <Compile Include="BitUtilsTests.cs" />
     <Compile Include="CartesianTreeWithImplicitKeyTests.cs" />
     <Compile Include="DataStructuresTests.cs" />
+    <Compile Include="FractionTests.cs" />
     <Compile Include="GeometryTests.cs" />
     <Compile Include="HashTests.cs" />
     <Compile Include="MatrixUtilsTests.cs" />
