@@ -441,7 +441,7 @@ namespace kp.Algo
 		}
 
 		/// <summary>
-		/// Computer euler phi function or the number of relativly prime (with n) numbers up to n.
+		/// Computes Euler phi function or the number of relativly prime (with n) numbers up to n.
 		/// Time complexity O(sqrt(N)).
 		/// </summary>
 		public static int EulerPhi( int n )
@@ -458,7 +458,7 @@ namespace kp.Algo
 		}
 
 		/// <summary>
-		/// Computer euler phi function or the number of relativly prime (with n) numbers up to n.
+		/// Computes Euler phi function or the number of relativly prime (with n) numbers up to n.
 		/// Time complexity O(sqrt(N)).
 		/// </summary>
 		public static long EulerPhi( long n )
@@ -472,6 +472,30 @@ namespace kp.Algo
 				}
 			if ( n > 1 ) result -= result / n;
 			return result;
+		}
+
+		/// <summary>
+		/// Computes array of Euler Phi values.
+		/// Time complexity O(NlogN)
+		/// </summary>
+		public static int[] EulerPhiArray( int n )
+		{
+			var phi = new int[n + 1];
+			for ( int i = n; i > 0; i-- )
+			{
+				phi[i] = i;
+			}
+			for ( int i = 2; i <= n; i++ )
+			{
+				if ( phi[i] == i )
+				{
+					for ( int j = i; j <= n; j += i )
+					{
+						phi[j] = phi[j] / i * ( i - 1 );
+					}
+				}
+			}
+			return phi;
 		}
 
 		/// <summary>

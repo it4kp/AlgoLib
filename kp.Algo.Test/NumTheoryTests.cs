@@ -39,6 +39,12 @@ namespace kp.Algo.Test
 					if ( NumTheoryUtils.Gcd( i, j ) == 1 ) ++cnt;
 				Assert.AreEqual( cnt, NumTheoryUtils.EulerPhi( i ) );
 			}
+
+			var phiArr = NumTheoryUtils.EulerPhiArray( 100000 );
+			for ( int i = 1; i < phiArr.Length; i++ )
+			{
+				Assert.AreEqual( NumTheoryUtils.EulerPhi( i ), phiArr[i] );
+			}
 		}
 
 		[TestMethod]
