@@ -4,7 +4,7 @@ namespace kp.Algo.Misc
 {
 	public class Matrix
 	{
-		public const int MOD = 1000000007;
+		public static int MOD = 1000000007;
 
 		public readonly int Rows, Cols;
 		public readonly int[,] Data;
@@ -16,6 +16,7 @@ namespace kp.Algo.Misc
 			Rows = rows; Cols = cols;
 			Data = new int[rows, cols];
 		}
+
 		public static Matrix operator *( Matrix a, Matrix b )
 		{
 			if ( a == null ) throw new ArgumentNullException( "a" );
@@ -31,6 +32,7 @@ namespace kp.Algo.Misc
 					}
 			return c;
 		}
+
 		public static Matrix operator ^( Matrix a, long b )
 		{
 			if ( a == null ) throw new ArgumentNullException( "a" );
