@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="ArrayUtils.cs" />
     <Compile Include="Misc\Fraction.cs" />
+    <Compile Include="Misc\MatrixLong.cs" />
     <Compile Include="Strings\AhoCorasickTree.cs" />
     <Compile Include="DataStructures\DisjointSetUnion.cs" />
     <Compile Include="DataStructures\MaxSegmentTreeLight.cs" />
