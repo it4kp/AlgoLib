@@ -15,13 +15,15 @@ namespace kp.Algo.Test
 			Assert.AreEqual( 2, res );
 			Assert.AreEqual( 0, colsMatching[0] );
 			Assert.AreEqual( 2, colsMatching[1] );
+            Assert.AreEqual( res, MatchingUtils.GetMinMatching(a) );
 
 			res = MatchingUtils.GetMaxMatching( a, out colsMatching );
 			Assert.AreEqual( 4, res );
 			Assert.AreEqual( 1, colsMatching[0] );
 			Assert.AreEqual( 0, colsMatching[1] );
+            Assert.AreEqual( res, MatchingUtils.GetMaxMatching(a) );
 
-			Random rnd = new Random( 123 );
+            Random rnd = new Random( 123 );
 			for ( int tests = 1; tests <= 1000; ++tests )
 			{
 				int rows = rnd.Next( 8 ) + 1;
@@ -35,6 +37,7 @@ namespace kp.Algo.Test
 				for ( int i = 0; i < rows; ++i )
 					if ( colsMatching[i] != -1 ) tmp += a[i, colsMatching[i]];
 				Assert.AreEqual( res, tmp );
+                Assert.AreEqual( res, MatchingUtils.GetMinMatching(a));
 				if ( rows <= cols )
 				{
 					tmp = int.MaxValue;
@@ -66,7 +69,8 @@ namespace kp.Algo.Test
 				for ( int i = 0; i < rows; ++i )
 					if ( colsMatching[i] != -1 ) tmp += a[i, colsMatching[i]];
 				Assert.AreEqual( res, tmp );
-				if ( rows <= cols )
+                Assert.AreEqual( res, MatchingUtils.GetMaxMatching(a));
+                if ( rows <= cols )
 				{
 					tmp = int.MinValue;
 					int[] p = PermutationUtils.First( cols );
